@@ -592,20 +592,28 @@ DASHBOARD_PAGE = HTML_HEADER + """
                                 </thead>
                                 <tbody>
                                     <tr>
+                                        <td>Today</td>
+                                        <td>1</td>
+                                        <td>0</td>
+                                        <td>1</td>
+                                        <td>1</td>
+                                        <td>1</td>
+                                    </tr>
+                                    <tr>
                                         <td>This Month</td>
-                                        <td>1</td>
-                                        <td>1</td>
-                                        <td>2</td>
-                                        <td>1</td>
                                         <td>3</td>
+                                        <td>2</td>
+                                        <td>4</td>
+                                        <td>2</td>
+                                        <td>5</td>
                                     </tr>
                                     <tr>
                                         <td>Last Month</td>
-                                        <td>0</td>
-                                        <td>0</td>
-                                        <td>0</td>
-                                        <td>0</td>
-                                        <td>0</td>
+                                        <td>5</td>
+                                        <td>7</td>
+                                        <td>8</td>
+                                        <td>3</td>
+                                        <td>10</td>
                                     </tr>
                                 </tbody>
                             </table>
