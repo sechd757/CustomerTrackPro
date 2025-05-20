@@ -1,0 +1,122 @@
+/* Main styles for Customer Logging System */
+
+/* General layout adjustments */
+body {
+    padding-top: 56px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.main-container {
+    flex: 1;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+
+.footer {
+    margin-top: auto;
+}
+
+/* Card styling */
+.card {
+    border-radius: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.card-header {
+    border-top-left-radius: 0.5rem !important;
+    border-top-right-radius: 0.5rem !important;
+}
+
+/* Calendar styles */
+.calendar-table {
+    table-layout: fixed;
+}
+
+.calendar-table th, 
+.calendar-table td {
+    height: 60px;
+    vertical-align: top;
+    text-align: center;
+    width: 14.28%;
+}
+
+.calendar-day {
+    position: relative;
+    padding: 5px;
+    transition: background-color 0.2s;
+}
+
+.calendar-day-link {
+    display: block;
+    height: 100%;
+    color: inherit;
+    text-decoration: none;
+}
+
+.calendar-date {
+    font-weight: bold;
+    text-align: right;
+}
+
+.calendar-badge {
+    position: absolute;
+    bottom: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #007bff;
+    color: white;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+}
+
+.calendar-day.has-records {
+    background-color: #f8f9fa;
+}
+
+.calendar-day.selected {
+    background-color: #e2f0ff;
+    border: 2px solid #007bff;
+}
+
+.calendar-day:hover {
+    background-color: #e9ecef;
+}
+
+/* Form styling */
+.form-required {
+    color: #dc3545;
+}
+
+/* Table styling */
+.table-responsive {
+    border-radius: 0.5rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 767.98px) {
+    .main-container {
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+    }
+    
+    .card-body {
+        padding: 1rem;
+    }
+    
+    .calendar-day {
+        height: 50px;
+    }
+    
+    .calendar-badge {
+        width: 20px;
+        height: 20px;
+        font-size: 0.65rem;
+    }
+}

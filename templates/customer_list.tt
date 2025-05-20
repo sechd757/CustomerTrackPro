@@ -1,0 +1,131 @@
+[% WRAPPER layout.tt %]
+
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h1 class="card-title">
+                        <i class="fas fa-users"></i> Customer List
+                    </h1>
+                    <div>
+                        <a href="search.cgi" class="btn btn-primary me-2">
+                            <i class="fas fa-search"></i> Search
+                        </a>
+                        <a href="customer.cgi?action=add" class="btn btn-success">
+                            <i class="fas fa-user-plus"></i> Add Customer
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+[% IF error %]
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <i class="fas fa-exclamation-circle"></i> [% error %]
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+[% END %]
+
+[% IF success %]
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+    <i class="fas fa-check-circle"></i> [% success %]
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+[% END %]
+
+<div class="row">
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover table-striped">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Name</th>
+                                <th>Phone</th>
+                                <th>Email</th>
+                                <th>Vehicle</th>
+                                <th>Sales Person</th>
+                                <th>Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            [% IF customers.size > 0 %]
+                            [% FOREACH customer IN customers %]
+                            <tr>
+                                <td>[% customer.name_decrypted %]</td>
+                                <td>[% customer.phone_decrypted %]</td>
+                                <td>[% customer.email %]</td>
+                                <td>
+                                    [% IF customer.year || customer.make || customer.model %]
+                                    [% customer.year %] [% customer.make %] [% customer.model %]
+                                    [% ELSE %]
+                                    <span class="text-muted">Not specified</span>
+                                    [% END %]
+                                </td>
+                                <td>[% customer.sales1 %]</td>
+                                <td>[% customer.datetime.split(' ').0 %]</td>
+                                <td>
+                                    <div class="btn-group btn-group-sm" role="group">
+                                        <a href="customer.cgi?action=edit&id=[% customer.id %]" class="btn btn-outline-primary" title="Edit">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <button type="button" class="btn btn-outline-danger" 
+                                                data-bs-toggle="modal" 
+                                                data-bs-target="#deleteModal[% customer.id %]" 
+                                                title="Delete">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </div>
+                                    
+                                    <!-- Delete Confirmation Modal -->
+                                    <div class="modal fade" id="deleteModal[% customer.id %]" tabindex="-1" aria-labelledby="deleteModalLabel[% customer.id %]" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="deleteModalLabel[% customer.id %]">Confirm Deletion</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Are you sure you want to delete the customer record for <strong>[% customer.name_decrypted %]</strong>? This action cannot be undone.
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                    <form method="post" action="customer.cgi" style="display:inline;">
+                                                        <input type="hidden" name="action" value="delete">
+                                                        <input type="hidden" name="id" value="[% customer.id %]">
+                                                        <button type="submit" name="submit" value="1" class="btn btn-danger">Delete</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            [% END %]
+                            [% ELSE %]
+                            <tr>
+                                <td colspan="7" class="text-center py-5">
+                                    <div class="text-muted">
+                                        <i class="fas fa-info-circle fa-3x mb-3"></i>
+                                        <p>No customer records found</p>
+                                        <a href="customer.cgi?action=add" class="btn btn-primary mt-2">
+                                            <i class="fas fa-user-plus"></i> Add Customer
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            [% END %]
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+[% END %]

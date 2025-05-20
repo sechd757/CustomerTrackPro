@@ -1,0 +1,43 @@
+modules = ["perl"]
+
+[nix]
+channel = "stable-24_05"
+
+[workflows]
+
+[deployment]
+run = ["sh", "-c", """
+#!/bin/bash
+# Install required Perl modules
+cpan -T install DBI
+cpan -T install DBD::mysql
+cpan -T install CGI
+cpan -T install CGI::Session
+cpan -T install Template
+cpan -T install Crypt::Mode::CBC
+cpan -T install Crypt::AuthEnc::GCM
+cpan -T install Crypt::PRNG
+cpan -T install Crypt::BCrypt
+cpan -T install MIME::Base64
+cpan -T install Time::Local
+
+# Install and start MariaDB
+apt-get update && apt-get install -y mariadb-server
+service mariadb start
+
+# Initialize database
+mysql -e \"CREATE DATABASE IF NOT EXISTS customer_log CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;\"
+mysql -e \"CREATE USER IF NOT EXISTS 'customer_log_user'@'localhost' IDENTIFIED BY 'change_this_password';\"
+mysql -e \"GRANT ALL PRIVILEGES ON customer_log.* TO 'customer_log_user'@'localhost';\"
+mysql -e \"FLUSH PRIVILEGES;\"
+mysql customer_log < sql/schema.sql
+
+# Make CGI scripts executable
+chmod +x *.cgi
+
+# Create sessions directory
+mkdir -p sessions
+chmod 777 sessions
+
+# Start the web server on port 5000
+perl -MCGI::Carp=fatalsToBrowser -MHTTP::Server::Simple::CGI -e 'HTTP::Server::Simple::CGI->new(5000)->run()'"""]

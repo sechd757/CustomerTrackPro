@@ -1,0 +1,170 @@
+[% WRAPPER layout.tt %]
+
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h1 class="card-title">
+                    <i class="fas [% action == 'add' ? 'fa-user-plus' : 'fa-user-edit' %]"></i>
+                    [% action == 'add' ? 'Add New Customer' : 'Edit Customer' %]
+                </h1>
+                <p class="text-muted">
+                    [% action == 'add' ? 'Create a new customer record' : 'Update customer information' %]
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+[% IF error %]
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <i class="fas fa-exclamation-circle"></i> [% error %]
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+[% END %]
+
+[% IF success %]
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+    <i class="fas fa-check-circle"></i> [% success %]
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+[% END %]
+
+<div class="row">
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <form method="post" action="customer.cgi">
+                    <input type="hidden" name="action" value="[% action %]">
+                    [% IF customer_id %]
+                    <input type="hidden" name="id" value="[% customer_id %]">
+                    [% END %]
+                    
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <h4>Customer Information</h4>
+                            <div class="card card-body bg-light mb-3">
+                                <div class="mb-3">
+                                    <label for="user" class="form-label">User <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="user" name="user" value="[% customer.user || username %]" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="name" class="form-label">Customer Name <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="name" name="name" value="[% customer.name_decrypted %]" required>
+                                    <div class="form-text text-muted">This field will be encrypted</div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="phone" class="form-label">Phone Number <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="phone" name="phone" value="[% customer.phone_decrypted %]" required>
+                                    <div class="form-text text-muted">This field will be encrypted</div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">Email Address</label>
+                                    <input type="email" class="form-control" id="email" name="email" value="[% customer.email %]">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="city" class="form-label">City</label>
+                                    <input type="text" class="form-control" id="city" name="city" value="[% customer.city %]">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <h4>Sales Details</h4>
+                            <div class="card card-body bg-light mb-3">
+                                <div class="mb-3">
+                                    <label for="stackno" class="form-label">Stack Number</label>
+                                    <input type="text" class="form-control" id="stackno" name="stackno" value="[% customer.stackno %]">
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="sales1" class="form-label">Sales Person 1</label>
+                                        <input type="text" class="form-control" id="sales1" name="sales1" value="[% customer.sales1 %]">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="sales2" class="form-label">Sales Person 2</label>
+                                        <input type="text" class="form-control" id="sales2" name="sales2" value="[% customer.sales2 %]">
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="closer" class="form-label">Closer</label>
+                                    <input type="text" class="form-control" id="closer" name="closer" value="[% customer.closer %]">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Type</label>
+                                    <select class="form-select" name="newused">
+                                        <option value="New" [% customer.newused == 'New' ? 'selected' : '' %]>New</option>
+                                        <option value="Used" [% customer.newused == 'Used' ? 'selected' : '' %]>Used</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <h4>Vehicle Information</h4>
+                            <div class="card card-body bg-light mb-3">
+                                <div class="row">
+                                    <div class="col-md-4 mb-3">
+                                        <label for="year" class="form-label">Year</label>
+                                        <input type="text" class="form-control" id="year" name="year" value="[% customer.year %]">
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label for="make" class="form-label">Make</label>
+                                        <input type="text" class="form-control" id="make" name="make" value="[% customer.make %]">
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label for="model" class="form-label">Model</label>
+                                        <input type="text" class="form-control" id="model" name="model" value="[% customer.model %]">
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="trade" class="form-label">Trade</label>
+                                    <input type="text" class="form-control" id="trade" name="trade" value="[% customer.trade %]">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="demo" class="form-label">Demo</label>
+                                    <select class="form-select" name="demo">
+                                        <option value="Yes" [% customer.demo == 'Yes' ? 'selected' : '' %]>Yes</option>
+                                        <option value="No" [% IF !customer.demo || customer.demo == 'No' %]selected[% END %]>No</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <h4>Additional Information</h4>
+                            <div class="card card-body bg-light mb-3">
+                                <div class="mb-3">
+                                    <label for="writeup" class="form-label">Write-up</label>
+                                    <textarea class="form-control" id="writeup" name="writeup" rows="2">[% customer.writeup %]</textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="results" class="form-label">Results</label>
+                                    <textarea class="form-control" id="results" name="results" rows="2">[% customer.results %]</textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="notes" class="form-label">Notes</label>
+                                    <textarea class="form-control" id="notes" name="notes" rows="3">[% customer.notes %]</textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between">
+                        <a href="customer.cgi" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left"></i> Back to List
+                        </a>
+                        <button type="submit" name="submit" value="1" class="btn btn-primary">
+                            <i class="fas [% action == 'add' ? 'fa-user-plus' : 'fa-save' %]"></i>
+                            [% action == 'add' ? 'Add Customer' : 'Save Changes' %]
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+[% END %]

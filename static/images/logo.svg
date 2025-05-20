@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="50" viewBox="0 0 200 50">
+  <style>
+    .logo-text { font-family: Arial, sans-serif; font-weight: bold; }
+    .primary { fill: #0d6efd; }
+    .secondary { fill: #6c757d; }
+  </style>
+  <g transform="translate(10, 32)">
+    <text class="logo-text primary" font-size="24">Customer</text>
+    <text class="logo-text secondary" x="115" font-size="24">Log</text>
+  </g>
+  <path class="primary" d="M15,10 C12,10 8,12 8,20 C8,28 12,30 15,30 C18,30 22,28 22,20 C22,12 18,10 15,10 Z" />
+  <path class="primary" d="M35,25 L25,25 L25,35 L35,35 Z" />
+  <path class="secondary" d="M155,15 L165,15 L165,35 L155,35 Z" />
+  <path class="secondary" d="M175,15 L185,15 L185,35 L175,35 Z" />
+</svg>

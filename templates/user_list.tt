@@ -1,0 +1,132 @@
+[% WRAPPER layout.tt %]
+
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h1 class="card-title">
+                        <i class="fas fa-users-cog"></i> User Management
+                    </h1>
+                    <a href="user.cgi?action=add" class="btn btn-success">
+                        <i class="fas fa-user-plus"></i> Add User
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+[% IF error %]
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <i class="fas fa-exclamation-circle"></i> [% error %]
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+[% END %]
+
+[% IF success %]
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+    <i class="fas fa-check-circle"></i> [% success %]
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+[% END %]
+
+<div class="row">
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover table-striped">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Username</th>
+                                <th>Full Name</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            [% IF users.size > 0 %]
+                            [% FOREACH user IN users %]
+                            <tr>
+                                <td>[% user.username %]</td>
+                                <td>[% user.full_name || '<span class="text-muted">Not specified</span>' %]</td>
+                                <td>[% user.email || '<span class="text-muted">Not specified</span>' %]</td>
+                                <td>
+                                    <span class="badge [% user.is_admin ? 'bg-danger' : 'bg-primary' %]">
+                                        [% user.is_admin ? 'Administrator' : 'Standard User' %]
+                                    </span>
+                                </td>
+                                <td>
+                                    <span class="badge [% user.is_active ? 'bg-success' : 'bg-secondary' %]">
+                                        [% user.is_active ? 'Active' : 'Inactive' %]
+                                    </span>
+                                </td>
+                                <td>
+                                    <div class="btn-group btn-group-sm" role="group">
+                                        <a href="user.cgi?action=edit&id=[% user.id %]" class="btn btn-outline-primary" title="Edit">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        [% IF user.id != current_user_id %]
+                                        <button type="button" class="btn btn-outline-danger" 
+                                                data-bs-toggle="modal" 
+                                                data-bs-target="#deleteModal[% user.id %]" 
+                                                title="Delete">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                        [% ELSE %]
+                                        <button type="button" class="btn btn-outline-danger" disabled title="Cannot delete your own account">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                        [% END %]
+                                    </div>
+                                    
+                                    <!-- Delete Confirmation Modal -->
+                                    <div class="modal fade" id="deleteModal[% user.id %]" tabindex="-1" aria-labelledby="deleteModalLabel[% user.id %]" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="deleteModalLabel[% user.id %]">Confirm Deletion</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Are you sure you want to delete the user <strong>[% user.username %]</strong>? This action cannot be undone.
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                    <form method="post" action="user.cgi" style="display:inline;">
+                                                        <input type="hidden" name="action" value="delete">
+                                                        <input type="hidden" name="id" value="[% user.id %]">
+                                                        <button type="submit" name="submit" value="1" class="btn btn-danger">Delete</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            [% END %]
+                            [% ELSE %]
+                            <tr>
+                                <td colspan="6" class="text-center py-5">
+                                    <div class="text-muted">
+                                        <i class="fas fa-info-circle fa-3x mb-3"></i>
+                                        <p>No users found</p>
+                                        <a href="user.cgi?action=add" class="btn btn-primary mt-2">
+                                            <i class="fas fa-user-plus"></i> Add User
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            [% END %]
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+[% END %]
