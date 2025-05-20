@@ -78,6 +78,28 @@ USERS = [
     }
 ]
 
+# Function to register a new user
+def register_user(username, password, full_name, email):
+    # Check if username already exists
+    for user in USERS:
+        if user["username"] == username:
+            return False, "Username already exists"
+    
+    # Create new user
+    new_user = {
+        "id": len(USERS) + 1,
+        "username": username,
+        "password": password,  # In real app, this would be hashed
+        "full_name": full_name,
+        "email": email,
+        "is_admin": False,
+        "is_active": True
+    }
+    
+    # Add to users list
+    USERS.append(new_user)
+    return True, "User registered successfully"
+
 # HTML templates for the demo
 HTML_HEADER = """<!DOCTYPE html>
 <html lang="en" data-bs-theme="light">
@@ -441,27 +463,85 @@ LOGIN_PAGE = """<!DOCTYPE html>
                         Password: <strong>admin123</strong>
                     </div>
 
-                    <form method="post" action="/login">
-                        <div class="mb-3">
-                            <label for="username" class="form-label">Username</label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="fas fa-user"></i></span>
-                                <input type="text" class="form-control" id="username" name="username" placeholder="Username" required autofocus>
-                            </div>
+                    <ul class="nav nav-tabs mb-3" id="loginRegisterTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="login-tab" data-bs-toggle="tab" data-bs-target="#login-tab-pane" type="button" role="tab" aria-controls="login-tab-pane" aria-selected="true">Login</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="register-tab" data-bs-toggle="tab" data-bs-target="#register-tab-pane" type="button" role="tab" aria-controls="register-tab-pane" aria-selected="false">Register</button>
+                        </li>
+                    </ul>
+                    
+                    <div class="tab-content" id="loginRegisterTabsContent">
+                        <div class="tab-pane fade show active" id="login-tab-pane" role="tabpanel" aria-labelledby="login-tab" tabindex="0">
+                            <form method="post" action="/login">
+                                <div class="mb-3">
+                                    <label for="username" class="form-label">Username</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                        <input type="text" class="form-control" id="username" name="username" placeholder="Username" required autofocus>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="password" class="form-label">Password</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                                        <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
+                                    </div>
+                                </div>
+                                <div class="d-grid gap-2">
+                                    <button class="btn btn-primary btn-lg" type="submit" name="submit" value="1">
+                                        <i class="fas fa-sign-in-alt"></i> Sign in
+                                    </button>
+                                </div>
+                            </form>
                         </div>
-                        <div class="mb-3">
-                            <label for="password" class="form-label">Password</label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="fas fa-lock"></i></span>
-                                <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
-                            </div>
+                        
+                        <div class="tab-pane fade" id="register-tab-pane" role="tabpanel" aria-labelledby="register-tab" tabindex="0">
+                            <form method="post" action="/register">
+                                <div class="mb-3">
+                                    <label for="new-username" class="form-label">Username</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                        <input type="text" class="form-control" id="new-username" name="new-username" placeholder="Choose a username" required>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="display-name" class="form-label">Full Name</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-id-card"></i></span>
+                                        <input type="text" class="form-control" id="display-name" name="display-name" placeholder="Your full name" required>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">Email</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                                        <input type="email" class="form-control" id="email" name="email" placeholder="Your email address" required>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="new-password" class="form-label">Password</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                                        <input type="password" class="form-control" id="new-password" name="new-password" placeholder="Choose a password" required>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="confirm-password" class="form-label">Confirm Password</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                                        <input type="password" class="form-control" id="confirm-password" name="confirm-password" placeholder="Confirm your password" required>
+                                    </div>
+                                </div>
+                                <div class="d-grid gap-2">
+                                    <button class="btn btn-success btn-lg" type="submit" name="register" value="1">
+                                        <i class="fas fa-user-plus"></i> Create Account
+                                    </button>
+                                </div>
+                            </form>
                         </div>
-                        <div class="d-grid gap-2">
-                            <button class="btn btn-primary btn-lg" type="submit" name="submit" value="1">
-                                <i class="fas fa-sign-in-alt"></i> Sign in
-                            </button>
-                        </div>
-                    </form>
+                    </div>
                 </div>
             </div>
             <div class="text-center mt-3">
@@ -1636,13 +1716,76 @@ class CustomerLoggingHandler(http.server.SimpleHTTPRequestHandler):
             username = params.get('username', [''])[0]
             password = params.get('password', [''])[0]
             
-            # Simple login check
-            if username == 'admin' and password == 'admin123':
+            # Check credentials against USERS list
+            user_authenticated = False
+            for user in USERS:
+                if user["username"] == username and user["password"] == password:
+                    user_authenticated = True
+                    break
+                    
+            if user_authenticated:
                 self.send_response(302)
                 self.send_header('Location', '/')
                 self.end_headers()
             else:
                 self._send_response(LOGIN_PAGE)
+                
+        # Handle user registration
+        elif self.path == '/register':
+            content_length = int(self.headers['Content-Length'])
+            post_data = self.rfile.read(content_length).decode('utf-8')
+            params = parse_qs(post_data)
+            
+            new_username = params.get('new-username', [''])[0]
+            display_name = params.get('display-name', [''])[0]
+            email = params.get('email', [''])[0]
+            new_password = params.get('new-password', [''])[0]
+            confirm_password = params.get('confirm-password', [''])[0]
+            
+            # Validate form data
+            if not new_username or not display_name or not email or not new_password:
+                # Missing required fields
+                self._send_response(LOGIN_PAGE + """
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        document.getElementById('register-tab').click();
+                        alert('Please fill in all required fields');
+                    });
+                </script>
+                """)
+            elif new_password != confirm_password:
+                # Passwords don't match
+                self._send_response(LOGIN_PAGE + """
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        document.getElementById('register-tab').click();
+                        alert('Passwords do not match');
+                    });
+                </script>
+                """)
+            else:
+                # Register the new user
+                success, message = register_user(new_username, new_password, display_name, email)
+                
+                if success:
+                    # Registration successful, redirect to login
+                    self._send_response(LOGIN_PAGE + """
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            alert('Registration successful! Please log in with your new credentials.');
+                        });
+                    </script>
+                    """)
+                else:
+                    # Registration failed
+                    self._send_response(LOGIN_PAGE + f"""
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function() {{
+                            document.getElementById('register-tab').click();
+                            alert('{message}');
+                        }});
+                    </script>
+                    """)
         else:
             # For other POST requests, just redirect back to the dashboard
             self.send_response(302)
