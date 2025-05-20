@@ -747,37 +747,37 @@ CALENDAR_PAGE = HTML_HEADER + """
                         color: inherit;
                         border-radius: 5px;
                         transition: background-color 0.2s;
+                        position: relative;
                     }
                     .date-cell:hover {
                         background-color: #e9ecef;
                     }
                     .date-number {
-                        font-weight: bold;
                         position: absolute;
                         top: 5px;
                         right: 5px;
+                        font-weight: bold;
                     }
-                    .customer-badge {
+                    .date-dot {
+                        width: 6px;
+                        height: 6px;
+                        border-radius: 50%;
+                        background-color: #007bff;
                         position: absolute;
                         bottom: 5px;
                         left: 50%;
                         transform: translateX(-50%);
-                        background-color: #007bff;
-                        color: white;
-                        border-radius: 50%;
-                        width: 24px;
-                        height: 24px;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        font-size: 0.75rem;
                     }
                     .current-date {
                         background-color: #e2f0ff;
                         border: 2px solid #007bff;
                     }
+                    .selected-date {
+                        background-color: #e9ecef;
+                        border: 2px solid #6c757d;
+                    }
                     .has-records {
-                        background-color: #f8f9fa;
+                        font-weight: 500;
                     }
                 </style>
                 <table class="table table-bordered calendar-table">
@@ -867,13 +867,13 @@ CALENDAR_PAGE = HTML_HEADER + """
                             <td>
                                 <a href="/calendar?day=14&month=5&year=2023" class="date-cell has-records">
                                     <span class="date-number">14</span>
-                                    <span class="customer-badge">1</span>
+                                    <span class="date-dot"></span>
                                 </a>
                             </td>
                             <td>
-                                <a href="/calendar?day=15&month=5&year=2023" class="date-cell has-records">
+                                <a href="/calendar?day=15&month=5&year=2023" class="date-cell selected-date has-records">
                                     <span class="date-number">15</span>
-                                    <span class="customer-badge">1</span>
+                                    <span class="date-dot"></span>
                                 </a>
                             </td>
                             <td>
@@ -974,23 +974,124 @@ CALENDAR_PAGE = HTML_HEADER + """
         <div class="card shadow-sm">
             <div class="card-header bg-light">
                 <h5 class="mb-0">
-                    <i class="fas fa-info-circle"></i> Calendar Information
+                    <i class="fas fa-list"></i> Customers for May 15, 2023
                 </h5>
             </div>
             <div class="card-body">
-                <div class="text-center py-4">
-                    <div class="text-muted">
-                        <i class="fas fa-calendar-alt fa-3x mb-3"></i>
-                        <p>Select a date to view customers added on that day</p>
-                        <p class="small">Dates with customer records are highlighted with a badge showing the count</p>
-                        <div class="mt-4">
-                            <div class="d-flex align-items-center justify-content-center mb-2">
-                                <div class="me-2" style="width: 20px; height: 20px; background-color: #e2f0ff; border: 2px solid #007bff;"></div>
-                                <div>Current date</div>
+                <div class="list-group list-group-flush">
+                    <div class="list-group-item px-0">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h6 class="mb-1">John Doe</h6>
+                            <small class="text-muted">14:30</small>
+                        </div>
+                        <p class="mb-1 small">
+                            <i class="fas fa-map-marker-alt text-secondary"></i> New York<br>
+                            <i class="fas fa-car text-secondary"></i> Toyota Camry<br>
+                            <i class="fas fa-user text-secondary"></i> Jane Smith
+                        </p>
+                        <div class="mt-2">
+                            <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#customerDetailModal">
+                                <i class="fas fa-eye"></i> View
+                            </button>
+                            <a href="/edit-customer/1" class="btn btn-sm btn-outline-secondary">
+                                <i class="fas fa-edit"></i> Edit
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Customer Detail Modal -->
+                <div class="modal fade" id="customerDetailModal" tabindex="-1" aria-labelledby="customerDetailModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="customerDetailModalLabel">John Doe - Customer Details</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
-                            <div class="d-flex align-items-center justify-content-center">
-                                <div class="me-2" style="width: 20px; height: 20px; background-color: #f8f9fa;"></div>
-                                <div>Date with customer records</div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <h6>Customer Information</h6>
+                                        <dl class="row mb-0">
+                                            <dt class="col-sm-4">Name:</dt>
+                                            <dd class="col-sm-8">John Doe</dd>
+                                            
+                                            <dt class="col-sm-4">Phone:</dt>
+                                            <dd class="col-sm-8">(555) 123-4567</dd>
+                                            
+                                            <dt class="col-sm-4">Email:</dt>
+                                            <dd class="col-sm-8">john@example.com</dd>
+                                            
+                                            <dt class="col-sm-4">City:</dt>
+                                            <dd class="col-sm-8">New York</dd>
+                                        </dl>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h6>Vehicle Information</h6>
+                                        <dl class="row mb-0">
+                                            <dt class="col-sm-4">Year:</dt>
+                                            <dd class="col-sm-8">2023</dd>
+                                            
+                                            <dt class="col-sm-4">Make:</dt>
+                                            <dd class="col-sm-8">Toyota</dd>
+                                            
+                                            <dt class="col-sm-4">Model:</dt>
+                                            <dd class="col-sm-8">Camry</dd>
+                                            
+                                            <dt class="col-sm-4">Type:</dt>
+                                            <dd class="col-sm-8">New</dd>
+                                        </dl>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <h6>Sales Information</h6>
+                                        <dl class="row mb-0">
+                                            <dt class="col-sm-4">Sales 1:</dt>
+                                            <dd class="col-sm-8">Jane Smith</dd>
+                                            
+                                            <dt class="col-sm-4">Sales 2:</dt>
+                                            <dd class="col-sm-8">Bob Johnson</dd>
+                                            
+                                            <dt class="col-sm-4">Closer:</dt>
+                                            <dd class="col-sm-8">Alice Brown</dd>
+                                            
+                                            <dt class="col-sm-4">Stack #:</dt>
+                                            <dd class="col-sm-8">A123</dd>
+                                        </dl>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h6>Additional Information</h6>
+                                        <dl class="row mb-0">
+                                            <dt class="col-sm-4">Trade:</dt>
+                                            <dd class="col-sm-8">Yes</dd>
+                                            
+                                            <dt class="col-sm-4">Demo:</dt>
+                                            <dd class="col-sm-8">No</dd>
+                                            
+                                            <dt class="col-sm-4">Date/Time:</dt>
+                                            <dd class="col-sm-8">2023-05-15 14:30:00</dd>
+                                        </dl>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <h6>Notes</h6>
+                                        <p>Customer is interested in financing options</p>
+                                        
+                                        <h6>Results</h6>
+                                        <p>Pending final approval</p>
+                                        
+                                        <h6>Write-up</h6>
+                                        <p>Follow up next week</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <a href="/edit-customer/1" class="btn btn-primary">Edit Customer</a>
                             </div>
                         </div>
                     </div>
@@ -1001,25 +1102,30 @@ CALENDAR_PAGE = HTML_HEADER + """
         <div class="card shadow-sm mt-4">
             <div class="card-header bg-light">
                 <h5 class="mb-0">
-                    <i class="fas fa-user-clock"></i> Recent Activity
+                    <i class="fas fa-info-circle"></i> Calendar Legend
                 </h5>
             </div>
             <div class="card-body">
-                <div class="list-group list-group-flush">
-                    <div class="list-group-item px-0">
-                        <div class="d-flex justify-content-between">
-                            <h6 class="mb-1">May 15, 2023</h6>
-                            <span class="badge bg-primary">1 customer</span>
-                        </div>
-                        <p class="mb-1">John Doe - Toyota Camry</p>
+                <div class="mb-3">
+                    <div class="d-flex align-items-center mb-2">
+                        <div class="me-2 p-2" style="background-color: #e2f0ff; border: 2px solid #007bff; width: 30px; height: 30px; border-radius: 5px;"></div>
+                        <div>Current day (May 20)</div>
                     </div>
-                    <div class="list-group-item px-0">
-                        <div class="d-flex justify-content-between">
-                            <h6 class="mb-1">May 14, 2023</h6>
-                            <span class="badge bg-primary">1 customer</span>
-                        </div>
-                        <p class="mb-1">Jane Smith - Honda Civic</p>
+                    <div class="d-flex align-items-center mb-2">
+                        <div class="me-2 p-2" style="background-color: #e9ecef; border: 2px solid #6c757d; width: 30px; height: 30px; border-radius: 5px;"></div>
+                        <div>Selected day (May 15)</div>
                     </div>
+                    <div class="d-flex align-items-center">
+                        <div class="me-2 p-2 position-relative" style="width: 30px; height: 30px; border-radius: 5px; border: 1px solid #dee2e6;">
+                            <div style="width: 6px; height: 6px; border-radius: 50%; background-color: #007bff; position: absolute; bottom: 2px; left: 12px;"></div>
+                        </div>
+                        <div>Day with customer records</div>
+                    </div>
+                </div>
+                <div class="text-center mt-4">
+                    <a href="/calendar" class="btn btn-sm btn-outline-primary">
+                        <i class="fas fa-calendar-alt"></i> View Current Month
+                    </a>
                 </div>
             </div>
         </div>
