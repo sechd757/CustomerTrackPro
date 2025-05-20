@@ -1,9 +1,29 @@
-modules = ["perl"]
+modules = ["perl", "python-3.11"]
 
 [nix]
 channel = "stable-24_05"
+packages = ["perl"]
 
 [workflows]
+runButton = "Project"
+
+[[workflows.workflow]]
+name = "Project"
+mode = "parallel"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Customer Logging System"
+
+[[workflows.workflow]]
+name = "Customer Logging System"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python demo_server.py"
+waitForPort = 5000
 
 [deployment]
 run = ["sh", "-c", """
@@ -41,3 +61,7 @@ chmod 777 sessions
 
 # Start the web server on port 5000
 perl -MCGI::Carp=fatalsToBrowser -MHTTP::Server::Simple::CGI -e 'HTTP::Server::Simple::CGI->new(5000)->run()'"""]
+
+[[ports]]
+localPort = 5000
+externalPort = 80
