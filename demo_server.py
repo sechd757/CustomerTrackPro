@@ -80,31 +80,123 @@ USERS = [
 
 # HTML templates for the demo
 HTML_HEADER = """<!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Customer Logging System Demo</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <style>
+        :root {
+            --bs-primary-rgb: 13, 110, 253;
+            --bs-body-bg-dark: #212529;
+            --bs-body-color-dark: #f8f9fa;
+            --bs-card-bg-dark: #343a40;
+            --bs-dark-border-subtle: #495057;
+        }
+        
         body {
             padding-top: 56px;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
+        
         .main-container {
             flex: 1;
             padding-top: 2rem;
             padding-bottom: 2rem;
         }
+        
         .footer {
             margin-top: auto;
         }
+        
         .card {
             border-radius: 0.5rem;
             margin-bottom: 1.5rem;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+        
+        /* Dark mode styles */
+        [data-bs-theme="dark"] {
+            color-scheme: dark;
+        }
+        
+        [data-bs-theme="dark"] .card {
+            --bs-card-bg: var(--bs-card-bg-dark);
+            --bs-card-border-color: var(--bs-dark-border-subtle);
+        }
+        
+        [data-bs-theme="dark"] .table {
+            --bs-table-bg: var(--bs-card-bg-dark);
+            --bs-table-border-color: var(--bs-dark-border-subtle);
+        }
+        
+        [data-bs-theme="dark"] .bg-light {
+            background-color: #343a40 !important;
+        }
+        
+        [data-bs-theme="dark"] .text-muted {
+            color: #adb5bd !important;
+        }
+        
+        /* Toggle switch for dark mode */
+        .mode-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+        
+        .mode-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .mode-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        
+        .mode-slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .mode-slider {
+            background-color: #6c757d;
+        }
+        
+        input:checked + .mode-slider:before {
+            transform: translateX(26px);
+        }
+        
+        .dark-mode-label {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0;
+        }
+        
+        .dark-mode-label span {
+            margin-right: 8px;
         }
     </style>
 </head>
@@ -138,6 +230,15 @@ HTML_HEADER = """<!DOCTYPE html>
                     </li>
                 </ul>
                 <ul class="navbar-nav">
+                    <li class="nav-item me-2">
+                        <label class="dark-mode-label mt-2">
+                            <span class="text-white"><i class="fas fa-moon"></i></span>
+                            <label class="mode-switch">
+                                <input type="checkbox" id="darkModeToggle">
+                                <span class="mode-slider"></span>
+                            </label>
+                        </label>
+                    </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
                             <i class="fas fa-user-circle"></i> admin
@@ -166,22 +267,64 @@ HTML_FOOTER = """
     </footer>
 
     <!-- Bootstrap 5 JS Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    <!-- Dark Mode Toggle Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check for saved dark mode preference or default to system preference
+            const darkModeToggle = document.getElementById('darkModeToggle');
+            const htmlElement = document.documentElement;
+            
+            // Check if user has a saved preference
+            const savedTheme = localStorage.getItem('theme');
+            
+            if (savedTheme) {
+                htmlElement.setAttribute('data-bs-theme', savedTheme);
+                darkModeToggle.checked = savedTheme === 'dark';
+            } else {
+                // Default to system preference
+                const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                if (prefersDarkMode) {
+                    htmlElement.setAttribute('data-bs-theme', 'dark');
+                    darkModeToggle.checked = true;
+                }
+            }
+            
+            // Toggle dark mode when switch is clicked
+            darkModeToggle.addEventListener('change', function() {
+                if (this.checked) {
+                    htmlElement.setAttribute('data-bs-theme', 'dark');
+                    localStorage.setItem('theme', 'dark');
+                } else {
+                    htmlElement.setAttribute('data-bs-theme', 'light');
+                    localStorage.setItem('theme', 'light');
+                }
+            });
+        });
+    </script>
 </body>
 </html>
 """
 
 LOGIN_PAGE = """<!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Login - Customer Logging System</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <style>
+        :root {
+            --bs-body-bg-dark: #212529;
+            --bs-body-color-dark: #f8f9fa;
+            --bs-card-bg-dark: #343a40;
+            --bs-dark-border-subtle: #495057;
+        }
+        
         body {
             display: flex;
             align-items: center;
@@ -189,16 +332,100 @@ LOGIN_PAGE = """<!DOCTYPE html>
             padding-bottom: 40px;
             background-color: #f5f5f5;
             height: 100vh;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
+        
+        [data-bs-theme="dark"] body {
+            background-color: var(--bs-body-bg-dark);
+            color: var(--bs-body-color-dark);
+        }
+        
+        [data-bs-theme="dark"] .card {
+            --bs-card-bg: var(--bs-card-bg-dark);
+            --bs-card-border-color: var(--bs-dark-border-subtle);
+        }
+        
+        [data-bs-theme="dark"] .text-muted {
+            color: #adb5bd !important;
+        }
+        
         .form-signin {
             width: 100%;
             max-width: 420px;
             padding: 15px;
             margin: auto;
         }
+        
+        /* Toggle switch for dark mode */
+        .mode-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+        
+        .mode-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .mode-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        
+        .mode-slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .mode-slider {
+            background-color: #6c757d;
+        }
+        
+        input:checked + .mode-slider:before {
+            transform: translateX(26px);
+        }
+        
+        .dark-mode-label {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0;
+        }
+        
+        .dark-mode-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
     </style>
 </head>
 <body>
+    <div class="dark-mode-toggle">
+        <label class="dark-mode-label">
+            <span><i class="fas fa-moon"></i></span>
+            <label class="mode-switch">
+                <input type="checkbox" id="darkModeToggle">
+                <span class="mode-slider"></span>
+            </label>
+        </label>
+    </div>
+
     <div class="container">
         <main class="form-signin">
             <div class="card shadow-sm">
@@ -243,7 +470,42 @@ LOGIN_PAGE = """<!DOCTYPE html>
         </main>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Dark Mode Toggle Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check for saved dark mode preference or default to system preference
+            const darkModeToggle = document.getElementById('darkModeToggle');
+            const htmlElement = document.documentElement;
+            
+            // Check if user has a saved preference
+            const savedTheme = localStorage.getItem('theme');
+            
+            if (savedTheme) {
+                htmlElement.setAttribute('data-bs-theme', savedTheme);
+                darkModeToggle.checked = savedTheme === 'dark';
+            } else {
+                // Default to system preference
+                const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                if (prefersDarkMode) {
+                    htmlElement.setAttribute('data-bs-theme', 'dark');
+                    darkModeToggle.checked = true;
+                }
+            }
+            
+            // Toggle dark mode when switch is clicked
+            darkModeToggle.addEventListener('change', function() {
+                if (this.checked) {
+                    htmlElement.setAttribute('data-bs-theme', 'dark');
+                    localStorage.setItem('theme', 'dark');
+                } else {
+                    htmlElement.setAttribute('data-bs-theme', 'light');
+                    localStorage.setItem('theme', 'light');
+                }
+            });
+        });
+    </script>
 </body>
 </html>
 """
