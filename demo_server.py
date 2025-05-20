@@ -731,7 +731,56 @@ CALENDAR_PAGE = HTML_HEADER + """
                 </div>
             </div>
             <div class="card-body">
-                <table class="table table-bordered">
+                <style>
+                    .calendar-table td {
+                        height: 60px;
+                        vertical-align: top;
+                        text-align: center;
+                        width: 14.28%;
+                        position: relative;
+                        padding: 5px;
+                    }
+                    .date-cell {
+                        display: block;
+                        height: 100%;
+                        text-decoration: none;
+                        color: inherit;
+                        border-radius: 5px;
+                        transition: background-color 0.2s;
+                    }
+                    .date-cell:hover {
+                        background-color: #e9ecef;
+                    }
+                    .date-number {
+                        font-weight: bold;
+                        position: absolute;
+                        top: 5px;
+                        right: 5px;
+                    }
+                    .customer-badge {
+                        position: absolute;
+                        bottom: 5px;
+                        left: 50%;
+                        transform: translateX(-50%);
+                        background-color: #007bff;
+                        color: white;
+                        border-radius: 50%;
+                        width: 24px;
+                        height: 24px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-size: 0.75rem;
+                    }
+                    .current-date {
+                        background-color: #e2f0ff;
+                        border: 2px solid #007bff;
+                    }
+                    .has-records {
+                        background-color: #f8f9fa;
+                    }
+                </style>
+                <table class="table table-bordered calendar-table">
                     <thead>
                         <tr>
                             <th>Sun</th>
@@ -746,45 +795,171 @@ CALENDAR_PAGE = HTML_HEADER + """
                     <tbody>
                         <tr>
                             <td></td>
-                            <td>1</td>
-                            <td>2</td>
-                            <td>3</td>
-                            <td>4</td>
-                            <td>5</td>
-                            <td>6</td>
+                            <td>
+                                <a href="/calendar?day=1&month=5&year=2023" class="date-cell">
+                                    <span class="date-number">1</span>
+                                </a>
+                            </td>
+                            <td>
+                                <a href="/calendar?day=2&month=5&year=2023" class="date-cell">
+                                    <span class="date-number">2</span>
+                                </a>
+                            </td>
+                            <td>
+                                <a href="/calendar?day=3&month=5&year=2023" class="date-cell">
+                                    <span class="date-number">3</span>
+                                </a>
+                            </td>
+                            <td>
+                                <a href="/calendar?day=4&month=5&year=2023" class="date-cell">
+                                    <span class="date-number">4</span>
+                                </a>
+                            </td>
+                            <td>
+                                <a href="/calendar?day=5&month=5&year=2023" class="date-cell">
+                                    <span class="date-number">5</span>
+                                </a>
+                            </td>
+                            <td>
+                                <a href="/calendar?day=6&month=5&year=2023" class="date-cell">
+                                    <span class="date-number">6</span>
+                                </a>
+                            </td>
                         </tr>
                         <tr>
-                            <td>7</td>
-                            <td>8</td>
-                            <td>9</td>
-                            <td>10</td>
-                            <td>11</td>
-                            <td>12</td>
-                            <td>13</td>
+                            <td>
+                                <a href="/calendar?day=7&month=5&year=2023" class="date-cell">
+                                    <span class="date-number">7</span>
+                                </a>
+                            </td>
+                            <td>
+                                <a href="/calendar?day=8&month=5&year=2023" class="date-cell">
+                                    <span class="date-number">8</span>
+                                </a>
+                            </td>
+                            <td>
+                                <a href="/calendar?day=9&month=5&year=2023" class="date-cell">
+                                    <span class="date-number">9</span>
+                                </a>
+                            </td>
+                            <td>
+                                <a href="/calendar?day=10&month=5&year=2023" class="date-cell">
+                                    <span class="date-number">10</span>
+                                </a>
+                            </td>
+                            <td>
+                                <a href="/calendar?day=11&month=5&year=2023" class="date-cell">
+                                    <span class="date-number">11</span>
+                                </a>
+                            </td>
+                            <td>
+                                <a href="/calendar?day=12&month=5&year=2023" class="date-cell">
+                                    <span class="date-number">12</span>
+                                </a>
+                            </td>
+                            <td>
+                                <a href="/calendar?day=13&month=5&year=2023" class="date-cell">
+                                    <span class="date-number">13</span>
+                                </a>
+                            </td>
                         </tr>
                         <tr>
-                            <td class="bg-light">14 <span class="badge bg-primary">1</span></td>
-                            <td class="bg-light">15 <span class="badge bg-primary">1</span></td>
-                            <td>16</td>
-                            <td>17</td>
-                            <td>18</td>
-                            <td>19</td>
-                            <td>20</td>
+                            <td>
+                                <a href="/calendar?day=14&month=5&year=2023" class="date-cell has-records">
+                                    <span class="date-number">14</span>
+                                    <span class="customer-badge">1</span>
+                                </a>
+                            </td>
+                            <td>
+                                <a href="/calendar?day=15&month=5&year=2023" class="date-cell has-records">
+                                    <span class="date-number">15</span>
+                                    <span class="customer-badge">1</span>
+                                </a>
+                            </td>
+                            <td>
+                                <a href="/calendar?day=16&month=5&year=2023" class="date-cell">
+                                    <span class="date-number">16</span>
+                                </a>
+                            </td>
+                            <td>
+                                <a href="/calendar?day=17&month=5&year=2023" class="date-cell">
+                                    <span class="date-number">17</span>
+                                </a>
+                            </td>
+                            <td>
+                                <a href="/calendar?day=18&month=5&year=2023" class="date-cell">
+                                    <span class="date-number">18</span>
+                                </a>
+                            </td>
+                            <td>
+                                <a href="/calendar?day=19&month=5&year=2023" class="date-cell">
+                                    <span class="date-number">19</span>
+                                </a>
+                            </td>
+                            <td>
+                                <a href="/calendar?day=20&month=5&year=2023" class="date-cell current-date">
+                                    <span class="date-number">20</span>
+                                </a>
+                            </td>
                         </tr>
                         <tr>
-                            <td>21</td>
-                            <td>22</td>
-                            <td>23</td>
-                            <td>24</td>
-                            <td>25</td>
-                            <td>26</td>
-                            <td>27</td>
+                            <td>
+                                <a href="/calendar?day=21&month=5&year=2023" class="date-cell">
+                                    <span class="date-number">21</span>
+                                </a>
+                            </td>
+                            <td>
+                                <a href="/calendar?day=22&month=5&year=2023" class="date-cell">
+                                    <span class="date-number">22</span>
+                                </a>
+                            </td>
+                            <td>
+                                <a href="/calendar?day=23&month=5&year=2023" class="date-cell">
+                                    <span class="date-number">23</span>
+                                </a>
+                            </td>
+                            <td>
+                                <a href="/calendar?day=24&month=5&year=2023" class="date-cell">
+                                    <span class="date-number">24</span>
+                                </a>
+                            </td>
+                            <td>
+                                <a href="/calendar?day=25&month=5&year=2023" class="date-cell">
+                                    <span class="date-number">25</span>
+                                </a>
+                            </td>
+                            <td>
+                                <a href="/calendar?day=26&month=5&year=2023" class="date-cell">
+                                    <span class="date-number">26</span>
+                                </a>
+                            </td>
+                            <td>
+                                <a href="/calendar?day=27&month=5&year=2023" class="date-cell">
+                                    <span class="date-number">27</span>
+                                </a>
+                            </td>
                         </tr>
                         <tr>
-                            <td>28</td>
-                            <td>29</td>
-                            <td>30</td>
-                            <td>31</td>
+                            <td>
+                                <a href="/calendar?day=28&month=5&year=2023" class="date-cell">
+                                    <span class="date-number">28</span>
+                                </a>
+                            </td>
+                            <td>
+                                <a href="/calendar?day=29&month=5&year=2023" class="date-cell">
+                                    <span class="date-number">29</span>
+                                </a>
+                            </td>
+                            <td>
+                                <a href="/calendar?day=30&month=5&year=2023" class="date-cell">
+                                    <span class="date-number">30</span>
+                                </a>
+                            </td>
+                            <td>
+                                <a href="/calendar?day=31&month=5&year=2023" class="date-cell">
+                                    <span class="date-number">31</span>
+                                </a>
+                            </td>
                             <td></td>
                             <td></td>
                             <td></td>
@@ -808,6 +983,42 @@ CALENDAR_PAGE = HTML_HEADER + """
                         <i class="fas fa-calendar-alt fa-3x mb-3"></i>
                         <p>Select a date to view customers added on that day</p>
                         <p class="small">Dates with customer records are highlighted with a badge showing the count</p>
+                        <div class="mt-4">
+                            <div class="d-flex align-items-center justify-content-center mb-2">
+                                <div class="me-2" style="width: 20px; height: 20px; background-color: #e2f0ff; border: 2px solid #007bff;"></div>
+                                <div>Current date</div>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-center">
+                                <div class="me-2" style="width: 20px; height: 20px; background-color: #f8f9fa;"></div>
+                                <div>Date with customer records</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card shadow-sm mt-4">
+            <div class="card-header bg-light">
+                <h5 class="mb-0">
+                    <i class="fas fa-user-clock"></i> Recent Activity
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="list-group list-group-flush">
+                    <div class="list-group-item px-0">
+                        <div class="d-flex justify-content-between">
+                            <h6 class="mb-1">May 15, 2023</h6>
+                            <span class="badge bg-primary">1 customer</span>
+                        </div>
+                        <p class="mb-1">John Doe - Toyota Camry</p>
+                    </div>
+                    <div class="list-group-item px-0">
+                        <div class="d-flex justify-content-between">
+                            <h6 class="mb-1">May 14, 2023</h6>
+                            <span class="badge bg-primary">1 customer</span>
+                        </div>
+                        <p class="mb-1">Jane Smith - Honda Civic</p>
                     </div>
                 </div>
             </div>
