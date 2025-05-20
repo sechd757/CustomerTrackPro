@@ -582,10 +582,12 @@ DASHBOARD_PAGE = HTML_HEADER + """
                             <table class="table table-hover">
                                 <thead>
                                     <tr>
-                                        <th>Type</th>
+                                        <th>Time Period</th>
                                         <th>New</th>
                                         <th>Used</th>
-                                        <th>Demos</th>
+                                        <th>Write Up</th>
+                                        <th>Demo</th>
+                                        <th>Results</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -593,10 +595,14 @@ DASHBOARD_PAGE = HTML_HEADER + """
                                         <td>This Month</td>
                                         <td>1</td>
                                         <td>1</td>
+                                        <td>2</td>
                                         <td>1</td>
+                                        <td>3</td>
                                     </tr>
                                     <tr>
                                         <td>Last Month</td>
+                                        <td>0</td>
+                                        <td>0</td>
                                         <td>0</td>
                                         <td>0</td>
                                         <td>0</td>
