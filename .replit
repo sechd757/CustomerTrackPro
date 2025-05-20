@@ -2,7 +2,7 @@ modules = ["perl", "python-3.11"]
 
 [nix]
 channel = "stable-24_05"
-packages = ["perl"]
+packages = ["cargo", "libiconv", "perl", "rustc"]
 
 [workflows]
 runButton = "Project"

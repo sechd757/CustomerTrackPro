@@ -8,6 +8,7 @@ import http.server
 import socketserver
 import os
 import json
+import bcrypt
 from urllib.parse import parse_qs, urlparse
 
 # Sample data to mock the customer database
@@ -56,12 +57,24 @@ CUSTOMERS = [
     }
 ]
 
-# Sample users for the system
+# Password utility functions using bcrypt (similar to Crypt::BCrypt in Perl)
+def hash_password(password):
+    """Create a bcrypt hash of the password"""
+    # Using work factor 10 as in the Perl code
+    salt = bcrypt.gensalt(rounds=10)
+    hashed = bcrypt.hashpw(password.encode('utf-8'), salt)
+    return hashed.decode('utf-8')
+
+def verify_password(password, hashed):
+    """Check if the password matches the hash"""
+    return bcrypt.checkpw(password.encode('utf-8'), hashed.encode('utf-8'))
+
+# Sample users for the system with bcrypt hashed passwords
 USERS = [
     {
         "id": 1,
         "username": "admin",
-        "password": "admin123",  # In real app, this would be hashed
+        "password": hash_password("admin123"),  # Properly hashed with bcrypt
         "full_name": "Administrator",
         "email": "admin@example.com",
         "is_admin": True,
@@ -70,7 +83,7 @@ USERS = [
     {
         "id": 2,
         "username": "user",
-        "password": "password",  # In real app, this would be hashed
+        "password": hash_password("password"),  # Properly hashed with bcrypt
         "full_name": "Regular User",
         "email": "user@example.com",
         "is_admin": False,
@@ -85,11 +98,11 @@ def register_user(username, password, full_name, email):
         if user["username"] == username:
             return False, "Username already exists"
     
-    # Create new user
+    # Create new user with hashed password
     new_user = {
         "id": len(USERS) + 1,
         "username": username,
-        "password": password,  # In real app, this would be hashed
+        "password": hash_password(password),  # Properly hashed with bcrypt
         "full_name": full_name,
         "email": email,
         "is_admin": False,
@@ -1716,10 +1729,10 @@ class CustomerLoggingHandler(http.server.SimpleHTTPRequestHandler):
             username = params.get('username', [''])[0]
             password = params.get('password', [''])[0]
             
-            # Check credentials against USERS list
+            # Check credentials against USERS list with secure password verification
             user_authenticated = False
             for user in USERS:
-                if user["username"] == username and user["password"] == password:
+                if user["username"] == username and verify_password(password, user["password"]):
                     user_authenticated = True
                     break
                     
